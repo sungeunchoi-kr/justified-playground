@@ -1,3 +1,4 @@
-- pattern: src/(.*)\.hs
+- pattern: [src/(.*)\.hs, (.*)\.cabal]
+  excludes: [(.*)\.swp, (.*)~]
   commands:
   - stack build
