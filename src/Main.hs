@@ -5,6 +5,13 @@ import Prelude hiding (lookup)
 import qualified Data.Map as M
 import Data.Map.Justified
 
+import Control.Monad
+import Control.Monad.ST
+import Control.Monad.Random
+import System.Random
+import Data.Array.ST
+import GHC.Arr
+
 type Graph = Map Int
 
 main :: IO ()
@@ -32,4 +39,11 @@ load str onComplete = withMap (toMap str) $ \map -> do
 -- from here, we have a verified map and its list of keys.
 onLoad :: forall ph. Map ph Int Int -> [Key ph Int] -> IO ()
 onLoad map keys = putStrLn $ show $ fmap (\key -> lookup key map) keys
+
+shuffle :: RandomGen g => [a] -> Rand g [a]
+shuffle xs = do
+    let len = length xs
+    let arr = listArray (0, len-1) xs
+    rands <- forM [0..(len-2)] $ \i -> getRandomR (i, len-1)
+    return []
 
